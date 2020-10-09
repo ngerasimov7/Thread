@@ -17,13 +17,19 @@ namespace ConsoleThread
 
             Thread Fthread = new Thread(new ThreadStart(fact))
             {
-                Name = "Поток расчета факторила";
-            }
-            Fthread.Name=""
-            //Factorial.Text = fact(int.Parse(N.Text)).ToString();
-            //Summa.Text = summ(int.Parse(N.Text)).ToString();
+                Name = "Поток расчета факторила",
+                Priority = ThreadPriority.Lowest
+            };
+            Fthread.Start();
 
+            Thread Sthread = new Thread(new ParameterizedThreadStart(summ))
+            {
+                Name = "Поток расчета суммы чисел",
+                Priority = ThreadPriority.Highest
+            };
+            Sthread.Start(N);
 
+            Console.ReadKey();
         }
 
         static void fact()
@@ -31,14 +37,19 @@ namespace ConsoleThread
             Console.WriteLine($"Факториал числа {N} = {ffact(N)}");
         }
 
+        static void summ(object n)
+        {
+            Console.WriteLine($"Сумма чисел {(BigInteger) n} = {fsumm((BigInteger) n)}");
+        }
+
         static  BigInteger ffact(BigInteger num)
         {
             return (num == 0) ? 1 : num * ffact(num - 1);
         }
 
-        static int summ(int num)
+        static BigInteger fsumm(BigInteger num)
         {
-            return (num == 0) ? 0 : num + summ(num - 1);
+            return (num == 0) ? 0 : num + fsumm(num - 1);
         }
     }
 }
