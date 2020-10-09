@@ -1,0 +1,19 @@
+﻿<Window x:Class="Thread.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Thread"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="250" Width="400">
+    <StackPanel Margin="5">
+        <TextBlock Margin="5">Введите число для расчета</TextBlock>
+        <TextBox x:Name="N" Margin="5"></TextBox>
+        <TextBlock Margin="5" >Факториал числа N</TextBlock>
+        <TextBox Margin="5" x:Name="Factorial"></TextBox>
+        <TextBlock Margin="5">Сумма целых чисел от 0 до N</TextBlock>
+        <TextBox Margin="5" x:Name="Summa"></TextBox>
+        <Button Margin="5" Click="Button_Click">Расчитать</Button>
+        
+    </StackPanel>
+</Window>
