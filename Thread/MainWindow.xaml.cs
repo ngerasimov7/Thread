@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Numerics;
 
 
@@ -30,22 +19,39 @@ namespace Thread
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Thread Fthread = new Thread();
-            
-            (new ThreadStart(fact(int.Parse(N.Text))));
-            //Factorial.Text = fact(int.Parse(N.Text)).ToString();
-            Summa.Text= summ(int.Parse(N.Text)).ToString();
+            Thread Fthread = new Thread(new ParameterizedThreadStart(fact))
+            {
+                Name = "Поток расчета факторила",
+                Priority = ThreadPriority.Lowest
+            };
+            Fthread.Start(N.Text);
+
+            Thread Sthread = new Thread(new ParameterizedThreadStart(summ))
+            {
+                Name = "Поток расчета суммы чисел",
+                Priority = ThreadPriority.Highest
+            };
+            Sthread.Start(N.Text);
         }
 
-        public BigInteger fact(BigInteger num)
+        void fact(object n)
         {
-            return (num == 0) ? 1 : num * fact(num - 1);
-
+            Factorial.Text = ffact((BigInteger)n).ToString();
         }
 
-        static int summ(int num)
+        void summ(object n)
         {
-            return (num == 0) ? 0 : num + summ(num - 1);
+            Summa.Text= fsumm((BigInteger)n).ToString();
+        }
+
+        static BigInteger ffact(BigInteger num)
+        {
+            return (num == 0) ? 1 : num * ffact(num - 1);
+        }
+
+        static BigInteger fsumm(BigInteger num)
+        {
+            return (num == 0) ? 0 : num + fsumm(num - 1);
         }
     }
 }
