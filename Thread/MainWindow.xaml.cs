@@ -15,33 +15,23 @@ namespace Thread
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Thread Fthread = new Thread(new ParameterizedThreadStart(fact))
+            var n = BigInteger.Parse(N.Text);
+            new System.Threading.Thread(() =>
             {
-                Name = "Поток расчета факторила",
-                Priority = ThreadPriority.Lowest
-            };
-            Fthread.Start(N.Text);
+                var result = ffact(n);
+                App.Current.Dispatcher.Invoke(() => Factorial.Text = result.ToString());  
+            }).Start();
 
-            Thread Sthread = new Thread(new ParameterizedThreadStart(summ))
+            new System.Threading.Thread(() =>
             {
-                Name = "Поток расчета суммы чисел",
-                Priority = ThreadPriority.Highest
-            };
-            Sthread.Start(N.Text);
-        }
-
-        void fact(object n)
-        {
-            Factorial.Text = ffact((BigInteger)n).ToString();
-        }
-
-        void summ(object n)
-        {
-            Summa.Text= fsumm((BigInteger)n).ToString();
+                var result = fsumm(n);
+                App.Current.Dispatcher.Invoke(() => Summa.Text = result.ToString());
+            }).Start();
         }
 
         static BigInteger ffact(BigInteger num)
